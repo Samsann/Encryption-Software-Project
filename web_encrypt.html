@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption App</title>
+</head>
+<body>
+    <h1>Encrypt Data</h1>
+    <form id="encryptForm">
+        <label for="plaintext">Plaintext:</label>
+        <input type="text" id="plaintext" name="plaintext" required>
+        <br>
+        <label for="key">Key:</label>
+        <input type="text" id="key" name="key" required>
+        <br>
+        <button type="submit">Encrypt</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('encryptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const plaintext = document.getElementById('plaintext').value;
+            const key = document.getElementById('key').value;
+
+            const response = await fetch('/encrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ plaintext, key }),
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = 'Ciphertext: ' + result.ciphertext;
+        });
+    </script>
+</body>
+</html>
