@@ -4,36 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encryption App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section h2 {
+            color: #555;
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .decrypt-btn {
+            background-color: #28a745;
+        }
+        .decrypt-btn:hover {
+            background-color: #1e7e34;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #007bff;
+            word-wrap: break-word;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .success {
+            border-left-color: #28a745;
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
 </head>
 <body>
-    <h1>Encrypt Data</h1>
-    <form id="encryptForm">
-        <label for="plaintext">Plaintext:</label>
-        <input type="text" id="plaintext" name="plaintext" required>
-        <br>
-        <label for="key">Key:</label>
-        <input type="text" id="key" name="key" required>
-        <br>
-        <button type="submit">Encrypt</button>
-    </form>
-    <div id="result"></div>
+    <div class="container">
+        <h1>🔒 Encryption & Decryption Tool</h1>
+        
+        <!-- Encryption Section -->
+        <div class="section">
+            <h2>Encrypt Data</h2>
+            <form id="encryptForm">
+                <label for="plaintext">Plaintext:</label>
+                <textarea id="plaintext" name="plaintext" rows="3" placeholder="Enter text to encrypt..." required></textarea>
+                
+                <label for="encryptKey">Password/Key:</label>
+                <input type="password" id="encryptKey" name="key" placeholder="Enter encryption password..." required>
+                
+                <button type="submit">🔐 Encrypt</button>
+            </form>
+            <div id="encryptResult"></div>
+        </div>
+
+        <!-- Decryption Section -->
+        <div class="section">
+            <h2>Decrypt Data</h2>
+            <form id="decryptForm">
+                <label for="ciphertext">Encrypted Text:</label>
+                <textarea id="ciphertext" name="ciphertext" rows="3" placeholder="Enter encrypted text..." required></textarea>
+                
+                <label for="decryptKey">Password/Key:</label>
+                <input type="password" id="decryptKey" name="key" placeholder="Enter decryption password..." required>
+                
+                <button type="submit" class="decrypt-btn">🔓 Decrypt</button>
+            </form>
+            <div id="decryptResult"></div>
+        </div>
+    </div>
 
     <script>
+        // Encryption form handler
         document.getElementById('encryptForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const plaintext = document.getElementById('plaintext').value;
-            const key = document.getElementById('key').value;
+            const key = document.getElementById('encryptKey').value;
+            const resultDiv = document.getElementById('encryptResult');
 
-            const response = await fetch('/encrypt', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ plaintext, key }),
-            });
+            try {
+                const response = await fetch('/encrypt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plaintext, key }),
+                });
 
-            const result = await response.json();
-            document.getElementById('result').innerText = 'Ciphertext: ' + result.ciphertext;
+                const result = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<div class="result success"><strong>Encrypted Text:</strong><br>${result.ciphertext}</div>`;
+                    // Auto-fill decrypt form for convenience
+                    document.getElementById('ciphertext').value = result.ciphertext;
+                } else {
+                    resultDiv.innerHTML = `<div class="result error"><strong>Error:</strong> ${result.error}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error"><strong>Error:</strong> Failed to connect to server</div>`;
+            }
+        });
+
+        // Decryption form handler
+        document.getElementById('decryptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const ciphertext = document.getElementById('ciphertext').value;
+            const key = document.getElementById('decryptKey').value;
+            const resultDiv = document.getElementById('decryptResult');
+
+            try {
+                const response = await fetch('/decrypt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ciphertext, key }),
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<div class="result success"><strong>Decrypted Text:</strong><br>${result.plaintext}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="result error"><strong>Error:</strong> ${result.error}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error"><strong>Error:</strong> Failed to connect to server</div>`;
+            }
         });
     </script>
 </body>
